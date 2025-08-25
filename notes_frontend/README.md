@@ -1,75 +1,50 @@
-# Nuxt Minimal Starter
+# Notes Frontend (Nuxt 3)
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A minimal, responsive Nuxt 3 frontend for creating, editing, deleting, and listing notes.
 
-## Setup
+## Features
+- Create, edit, delete, and list notes
+- Minimalistic light theme
+- Responsive layout with top navigation bar
+- Editor section for creating/updating notes
+- API base is configurable via environment variable
 
-Make sure to install dependencies:
+## Environment Variables
+Configure the backend API base URL at runtime:
 
+- NUXT_PUBLIC_API_BASE: Base URL for the notes API (e.g. `https://api.example.com` or `/api`).
+
+Examples:
 ```bash
-# npm
-npm install
+# Development with local API server on port 4000
+NUXT_PUBLIC_API_BASE=http://localhost:4000 npm run dev
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+# Production build pointing to a hosted API
+NUXT_PUBLIC_API_BASE=https://notes-api.example.com npm run build
 ```
 
-## Development Server
+If not provided, the app defaults to `/api`.
 
-Start the development server on `http://localhost:3000`:
+## Scripts
+- `npm run dev` – start dev server
+- `npm run build` – build for production
+- `npm run preview` – preview production build
+- `npm run lint` – run eslint
 
-```bash
-# npm
-npm run dev
+## Structure
+- `assets/css/main.css` – global theme and layout styles
+- `composables/useApi.ts` – API client using runtime config
+- `composables/useNotes.ts` – reactive notes store
+- `components/NoteList.vue` – note list UI
+- `components/NoteEditor.vue` – create/edit form
+- `pages/index.vue` – main page integrating list + editor
+- `nuxt.config.ts` – Nuxt configuration with runtime public config
 
-# pnpm
-pnpm dev
+## Expected API
+This frontend expects a backend providing:
+- `GET    /notes` → `[ { id, title, content, createdAt?, updatedAt? } ]`
+- `POST   /notes` → `{ id, title, content, createdAt?, updatedAt? }`
+- `PUT    /notes/:id` → updated note
+- `DELETE /notes/:id` → 204 No Content
 
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+You can set up an API gateway or proxy to map `/api` to your backend service.
